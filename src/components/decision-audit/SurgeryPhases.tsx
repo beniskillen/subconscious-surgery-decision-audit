@@ -14,40 +14,40 @@ const PHASE_META: Array<{ n: string; visual: PhaseVisualKind; defaults: {
     n: "01",
     visual: "locate",
     defaults: {
-      title: "Identification",
-      short: "Find the exact belief",
-      body: "Your language reveals the relationship you have with the stalled decision. Combined with empathic assessment, the precise belief underneath it is named in its exact wording. Not a category. The line that is running you.",
-      caption: "EXACT BELIEF",
+      title: "Name the decision",
+      short: "Define the decision",
+      body: "Define the specific business decision under review.",
+      caption: "THE DECISION",
     },
   },
   {
     n: "02",
     visual: "extract",
     defaults: {
-      title: "Extraction",
-      short: "Remove the charge",
-      body: "Your subconscious ranks what to notice by emotional charge. Pattern interrupts specific to the originating story strip that charge. When the charge goes, the story loses its ranking. What you see, decide, and create starts to change.",
-      caption: "CHARGE REMOVED",
+      title: "Estimate the cost",
+      short: "Price the delay",
+      body: "Document the time, money or opportunity affected by continued delay.",
+      caption: "COST OF DELAY",
     },
   },
   {
     n: "03",
     visual: "prescribe",
     defaults: {
-      title: "Prescription",
-      short: "Install the new story",
-      body: "Once the charge is gone, the narrative is resculpted. Precisely constructed language your subconscious accepts without resistance. New words. New frames. A story your system begins to use automatically.",
-      caption: "NEW LANGUAGE",
+      title: "Document the assumptions",
+      short: "Write the reasoning",
+      body: "Record the participant's current reasoning and working assumptions in their own words.",
+      caption: "ASSUMPTIONS",
     },
   },
   {
     n: "04",
     visual: "activate",
     defaults: {
-      title: "Activation",
-      short: "Embed the change",
-      body: "Not a fixed programme. A surgical plan that evolves as each layer shows. Between sessions, specific processes strengthen the new pathways. Timing is assessed organically because integration is not linear.",
-      caption: "PATHWAYS LIVE",
+      title: "Define the next step",
+      short: "Choose one action",
+      body: "Choose one practical action and when it will be taken.",
+      caption: "NEXT ACTION",
     },
   },
 ];
@@ -181,12 +181,12 @@ export function SurgeryPhases() {
   const phase = PHASE_META[active] ?? PHASE_META[0]!;
 
   return (
-    <div className="surgery-phases relative flex h-full min-h-[52vh] flex-col bg-foreground text-background lg:min-h-full">
+    <div className="relative flex h-full min-h-[52vh] flex-col bg-foreground text-background lg:min-h-full">
       <div className="relative z-10 flex flex-1 flex-col justify-between gap-8 px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
         <div>
           <Live
             id="phases.eyebrow"
-            defaultValue="How Subconscious Surgery works"
+            defaultValue="How the Decision Audit works"
             dark
             onFocusEdit={pauseForEdit}
             className="block text-[11px] font-semibold tracking-[0.2em] text-background/50 uppercase"
@@ -194,14 +194,14 @@ export function SurgeryPhases() {
           <h2 className="mt-3 max-w-md font-sans text-2xl leading-[1.05] font-bold tracking-[-0.03em] uppercase sm:text-3xl">
             <Live
               id="phases.headline"
-              defaultValue="Four phases."
+              defaultValue="Four steps."
               dark
               onFocusEdit={pauseForEdit}
               className="inline"
             />
             <Live
               id="phases.headlineAccent"
-              defaultValue="One precise cut."
+              defaultValue="One documented decision."
               dark
               onFocusEdit={pauseForEdit}
               className="mt-1 block font-display text-[1.35em] font-semibold tracking-[-0.02em] text-accent italic normal-case"
@@ -209,7 +209,7 @@ export function SurgeryPhases() {
           </h2>
           <Live
             id="phases.intro"
-            defaultValue="Language is the scalpel. The Decision Audit makes the belief under one stalled decision visible, measurable, and workable."
+            defaultValue="A structured working session. Document the decision, estimate the cost of delay, examine the assumptions involved and leave with one practical next action."
             as="p"
             multiline
             dark

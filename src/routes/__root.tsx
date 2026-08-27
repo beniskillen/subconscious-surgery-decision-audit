@@ -81,17 +81,35 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "A free 40-minute working session for founders sitting on the same decision for more than 30 days.",
+          "A free 40-minute working session for founders and operators. Document one business decision and leave with one practical next action.",
       },
       { name: "author", content: "Subconscious Surgery" },
       { property: "og:title", content: "The Decision Audit | Subconscious Surgery" },
       {
         property: "og:description",
         content:
-          "One decision. One belief. One number. A free 40-minute working session for founders.",
+          "A free 40-minute working session for founders and operators. Document one business decision and leave with one practical next action.",
       },
       { property: "og:type", content: "website" },
+      {
+        property: "og:url",
+        content: "https://beniskillen.github.io/decision-audit/",
+      },
+      {
+        property: "og:image",
+        content: "https://beniskillen.github.io/decision-audit/brand/logo.png",
+      },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "The Decision Audit | Subconscious Surgery" },
+      {
+        name: "twitter:description",
+        content:
+          "A free 40-minute working session for founders and operators. Document one business decision and leave with one practical next action.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://beniskillen.github.io/decision-audit/brand/logo.png",
+      },
     ],
     links: [
       {

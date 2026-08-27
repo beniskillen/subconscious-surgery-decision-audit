@@ -7,25 +7,25 @@ const STEPS = [
     id: "decision",
     n: "01",
     titleDefault: "Name the decision",
-    detailDefault: "The one stalled move on the table.",
+    detailDefault: "Define the specific business decision under review.",
   },
   {
     id: "cost",
     n: "02",
-    titleDefault: "Name the stall",
-    detailDefault: "Your own number on what delay has already cost.",
+    titleDefault: "Estimate the cost",
+    detailDefault: "Document the time, money or opportunity affected by continued delay.",
   },
   {
-    id: "belief",
+    id: "assumptions",
     n: "03",
-    titleDefault: "Name the belief",
-    detailDefault: "The exact wording underneath the stall, written down.",
+    titleDefault: "Document the assumptions",
+    detailDefault: "Record current reasoning and working assumptions in the participant's own words.",
   },
   {
-    id: "score",
+    id: "next",
     n: "04",
-    titleDefault: "Score + next step",
-    detailDefault: "Baseline 1 to 10, then one concrete move with when.",
+    titleDefault: "Define the next step",
+    detailDefault: "Choose one practical action and when it will be taken.",
   },
 ];
 
@@ -67,7 +67,7 @@ export function ProcessDiagram() {
             viewBox="0 0 520 320"
             className="h-auto w-full"
             role="img"
-            aria-label="Audit process diagram showing superposition collapsing under measurement"
+            aria-label="Audit process diagram showing options collapsing into one documented next step"
           >
             <text
               x="70"
@@ -171,7 +171,7 @@ export function ProcessDiagram() {
           <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
             <Live
               id="diagram.heading"
-              defaultValue="Decision · Cost · Belief · Baseline · Next step"
+              defaultValue="Decision · Cost · Assumptions · Next step"
               className="inline"
             />
           </p>

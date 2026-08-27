@@ -54,7 +54,7 @@ export function Reveal({
   );
 }
 
-/** Sticky mobile CTA that slides in after leaving the hero. */
+/** Sticky mobile CTA that slides in after leaving the hero, and hides while booking is on screen. */
 export function useStickyCta(heroRef: React.RefObject<HTMLElement | null>) {
   const [visible, setVisible] = useState(false);
 
@@ -62,7 +62,13 @@ export function useStickyCta(heroRef: React.RefObject<HTMLElement | null>) {
     const onScroll = () => {
       const hero = heroRef.current;
       if (!hero) return;
-      setVisible(window.scrollY > hero.offsetHeight * 0.55);
+      const pastHero = window.scrollY > hero.offsetHeight * 0.55;
+      const book = document.getElementById("book");
+      const rect = book?.getBoundingClientRect();
+      const bookingFillsView = rect
+        ? rect.top < 96 && rect.bottom > window.innerHeight - 96
+        : false;
+      setVisible(pastHero && !bookingFillsView);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();

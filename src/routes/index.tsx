@@ -1,21 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { AuditSheet } from "@/components/decision-audit/AuditSheet";
 import { CalendlyEmbed } from "@/components/decision-audit/CalendlyEmbed";
 import { QuantumField } from "@/components/decision-audit/QuantumField";
 import { GhostNumeral } from "@/components/decision-audit/GhostNumeral";
 import { ProcessDiagram } from "@/components/decision-audit/ProcessDiagram";
 import { SurgeryPhases } from "@/components/decision-audit/SurgeryPhases";
-import {
-  CASE_STUDY_VIDEOS,
-  TESTIMONIALS,
-} from "@/components/decision-audit/testimonials";
-import {
-  LocalVideoPreview,
-  YoutubeAutoplay,
-  YoutubePreview,
-} from "@/components/decision-audit/VideoPreview";
-import { Live, LiveCopyProvider, useLiveCopy } from "@/components/decision-audit/LiveCopy";
+import { YoutubeAutoplay } from "@/components/decision-audit/VideoPreview";
+import { Live, LiveCopyProvider } from "@/components/decision-audit/LiveCopy";
 import { Reveal, useStickyCta } from "@/components/decision-audit/useReveal";
 import {
   Accordion,
@@ -26,10 +19,14 @@ import {
 
 import { asset } from "@/lib/asset";
 
+const PAGE_URL = "https://beniskillen.github.io/decision-audit/";
+const PAGE_IMAGE = "https://beniskillen.github.io/decision-audit/brand/logo.png";
+const PAGE_DESCRIPTION =
+  "A free 40-minute working session for founders and operators. Document one business decision and leave with one practical next action.";
+
 const ASSETS = {
   logo: asset("brand/logo.png"),
   portrait: asset("brand/adrian-portrait.png"),
-  youtube: asset("brand/social/youtube.png"),
   instagram: asset("brand/social/instagram.png"),
   facebook: asset("brand/social/facebook.png"),
   whatsapp: asset("brand/social/whatsapp.png"),
@@ -40,52 +37,50 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "The Decision Audit | Subconscious Surgery" },
-      {
-        name: "description",
-        content:
-          "A free 40-minute working session for high performers who need clarity.",
-      },
+      { name: "description", content: PAGE_DESCRIPTION },
       { property: "og:title", content: "The Decision Audit | Subconscious Surgery" },
-      {
-        property: "og:description",
-        content:
-          "You already know the move. Something in you keeps you from making it. A free 40-minute Decision Audit for high performers who need clarity.",
-      },
+      { property: "og:description", content: PAGE_DESCRIPTION },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: PAGE_URL },
+      { property: "og:image", content: PAGE_IMAGE },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "The Decision Audit | Subconscious Surgery" },
+      { name: "twitter:description", content: PAGE_DESCRIPTION },
+      { name: "twitter:image", content: PAGE_IMAGE },
     ],
   }),
   component: Index,
 });
 
 const CTA_DEFAULT = "Book your Decision Audit";
+const CTA_NOTE = "Ten this month. If it isn't the right tool, he'll tell you.";
 const CTA_HREF = "#book";
 const HERO_VSL_ID = "6p0Xtf21CyM";
 
 const MECHANISM = [
   {
     n: "01",
-    title: "Name the stall",
-    body: "Name the one decision. Put your own number on what delay has already cost.",
-    keep: "You keep: the cost figure.",
+    title: "Name the decision",
+    body: "Define the specific business decision under review.",
+    keep: "You keep: the decision, named.",
   },
   {
     n: "02",
-    title: "Name the belief",
-    body: "How you talk about the decision shows the belief underneath it, in its exact wording. Not a category. Not a mood.",
-    keep: "You keep: the belief, written down.",
+    title: "Estimate the cost",
+    body: "Document the time, money or opportunity affected by continued delay.",
+    keep: "You keep: the cost of delay.",
   },
   {
     n: "03",
-    title: "Score the baseline",
-    body: "That belief, scored 1 to 10, logged.",
-    keep: "You keep: your baseline score.",
+    title: "Document the assumptions",
+    body: "Record the participant's current reasoning and working assumptions in their own words.",
+    keep: "You keep: the assumptions, written down.",
   },
   {
     n: "04",
-    title: "Name the next step",
-    body: "One concrete move. When you will take it. Written down before you leave.",
-    keep: "You keep: exact next-step clarity.",
+    title: "Define the next step",
+    body: "Choose one practical action and when it will be taken.",
+    keep: "You keep: the next action and when.",
   },
 ];
 
@@ -96,11 +91,11 @@ const FAQS = [
   },
   {
     q: "Is this a 90-day plan or programme pitch?",
-    a: "No. One decision. Exact clarity on the next step.",
+    a: "No. One decision. A documented next step.",
   },
   {
     q: "Is this woo?",
-    a: "The right starting position is scepticism. Good. Everything is stated, scored and written down.",
+    a: "The right starting position is scepticism. Good. Everything is stated and written down.",
   },
   {
     q: "Is this therapy?",
@@ -116,7 +111,6 @@ const FAQS = [
   },
 ];
 const SOCIALS = [
-  { name: "YouTube", href: "https://www.youtube.com/@subconscioussurgery144", icon: ASSETS.youtube },
   { name: "Instagram", href: "https://www.instagram.com/adrian_taffinder", icon: ASSETS.instagram },
   { name: "Facebook", href: "https://www.facebook.com/subconscioussurgery", icon: ASSETS.facebook },
   { name: "WhatsApp", href: "https://wa.me/447572431214", icon: ASSETS.whatsapp },
@@ -126,6 +120,47 @@ const SOCIALS = [
     icon: ASSETS.linkedin,
   },
 ];
+
+function scrollToBooking(event?: { preventDefault(): void }) {
+  event?.preventDefault();
+  const el = document.getElementById("book");
+  if (!el) return;
+  window.history.replaceState(null, "", CTA_HREF);
+
+  const align = () => {
+    const target = document.getElementById("book");
+    if (!target) return;
+    const delta = target.getBoundingClientRect().top - 12;
+    if (Math.abs(delta) > 2) window.scrollBy(0, delta);
+  };
+
+  align();
+  requestAnimationFrame(align);
+  window.setTimeout(align, 400);
+  window.setTimeout(align, 900);
+}
+
+function BrandLogo({
+  placement,
+  loading,
+}: {
+  placement: "header" | "footer";
+  loading?: "lazy";
+}) {
+  return (
+    <span className={`brand-logo-wrap brand-logo-wrap--${placement}`}>
+      <img
+        src={ASSETS.logo}
+        alt="Subconscious Surgery"
+        width={4096}
+        height={804}
+        decoding="async"
+        {...(loading ? { loading } : {})}
+        className="brand-logo"
+      />
+    </span>
+  );
+}
 
 function CtaButton({
   className = "",
@@ -137,6 +172,10 @@ function CtaButton({
   return (
     <a
       href={CTA_HREF}
+      onClick={(event) => {
+        onHover?.();
+        scrollToBooking(event);
+      }}
       onMouseEnter={onHover}
       onFocus={onHover}
       className={`cta-button inline-flex items-center justify-center bg-accent px-8 py-4 text-sm font-bold tracking-wide text-accent-foreground uppercase hover:bg-accent-soft focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none ${className}`}
@@ -196,9 +235,14 @@ function DecisionAuditPage() {
   const underlineRef = useRef<HTMLSpanElement | null>(null);
   const [collapsed, setCollapsed] = useState(false);
   const stickyVisible = useStickyCta(heroRef);
-  const { get } = useLiveCopy();
 
   const collapse = useCallback(() => setCollapsed(true), []);
+
+  useEffect(() => {
+    if (window.location.hash !== CTA_HREF) return;
+    const frame = window.requestAnimationFrame(() => scrollToBooking());
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   useEffect(() => {
     if (collapsed) return;
@@ -212,22 +256,11 @@ function DecisionAuditPage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [collapsed]);
 
-  const verified = TESTIMONIALS.filter((t) => !t.youtubeId);
-  const youtubeOnly = TESTIMONIALS.filter(
-    (t) => t.youtubeId && !CASE_STUDY_VIDEOS.some((c) => c.youtubeId === t.youtubeId),
-  );
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header ref={heroRef} className="relative overflow-hidden border-b border-hairline">
         <div className="relative z-20 flex h-11 items-center justify-center border-b border-hairline px-6 sm:h-12 sm:px-10">
-          <img
-            src={ASSETS.logo}
-            alt="Subconscious Surgery"
-            className="h-5 w-auto sm:h-6"
-            width={480}
-            height={96}
-          />
+          <BrandLogo placement="header" />
         </div>
         <div className="relative flex flex-col pt-4 pb-5 sm:pt-5 sm:pb-6">
           <QuantumField collapsed={collapsed} targetRef={underlineRef} />
@@ -244,11 +277,11 @@ function DecisionAuditPage() {
                 className="hero-copy mt-3 w-full font-sans text-[2.15rem] leading-[0.98] font-bold tracking-[-0.04em] uppercase sm:mt-3 sm:text-5xl lg:text-[3.1rem]"
                 data-step="2"
               >
-                <Live id="hero.line1" defaultValue="You already know the move." className="block" />
+                <Live id="hero.line1" defaultValue="Examine one important business decision" className="block" />
                 <span ref={underlineRef} className="relative inline-block italic">
                   <Live
                     id="hero.line2"
-                    defaultValue="Something in you keeps you from making it."
+                    defaultValue="and define a practical next step."
                     className="font-display font-semibold normal-case tracking-[-0.02em]"
                   />
                 </span>
@@ -256,7 +289,7 @@ function DecisionAuditPage() {
 
               <Live
                 id="hero.body"
-                defaultValue="A free 40-minute working session for high performers who need clarity."
+                defaultValue="A free 40-minute working session for founders and operators. Document the decision, estimate the cost of delay, examine the assumptions involved and leave with one practical next action."
                 as="p"
                 multiline
                 className="hero-copy mt-3 w-full text-center text-base leading-relaxed text-muted-foreground sm:mt-4 sm:text-lg"
@@ -275,7 +308,7 @@ function DecisionAuditPage() {
               <CtaButton onHover={collapse} />
               <Live
                 id="hero.ctaNote"
-                defaultValue="Make your next moves in alignment with your highest potential."
+                defaultValue={CTA_NOTE}
                 as="p"
                 multiline
                 className="w-full max-w-md text-center text-sm text-muted-foreground"
@@ -286,7 +319,7 @@ function DecisionAuditPage() {
         <div className="hero-copy border-t border-hairline px-6 py-5 sm:px-10 sm:py-6" data-step="5">
           <Live
             id="hero.trust"
-            defaultValue="Founders and operators · 3+ year average client relationship · Not therapy. Not medical treatment."
+            defaultValue="A structured decision-making session. Not healthcare, therapy or medical treatment."
             as="p"
             multiline
             className="mx-auto max-w-3xl text-center text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase"
@@ -306,7 +339,7 @@ function DecisionAuditPage() {
             <Reveal>
               <Live
                 id="problem.headline"
-                defaultValue="What decision have you been sitting on for more than 30 days?"
+                defaultValue="Some business decisions remain unresolved after the analysis is complete."
                 as="h2"
                 multiline
                 className="max-w-3xl font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] text-balance uppercase sm:text-5xl"
@@ -317,13 +350,7 @@ function DecisionAuditPage() {
                 <div className="space-y-6 text-base leading-relaxed sm:text-lg">
                   <Live
                     id="problem.p1"
-                    defaultValue="The hire you keep re-interviewing for. The price you keep not raising. The partner conversation you keep rescheduling. The offer you built and never sent."
-                    as="p"
-                    multiline
-                  />
-                  <Live
-                    id="problem.p2"
-                    defaultValue="You have done the analysis. You have asked smart people. You already know the move. Something in you keeps you from making it."
+                    defaultValue="This may involve a hire, pricing change, partnership conversation or offer that has not been launched."
                     as="p"
                     multiline
                   />
@@ -332,7 +359,7 @@ function DecisionAuditPage() {
               <Reveal delay={160}>
                 <Live
                   id="problem.aside"
-                  defaultValue="The ceiling is not your strategy. It is not your discipline. It is not your circumstances. It is a belief, held below the level of consciousness, that you do not even know is running you."
+                  defaultValue="The Decision Audit provides a structured setting to examine one decision, document the assumptions involved and define a practical next step."
                   as="p"
                   multiline
                   className="border-l border-hairline pl-6 text-base leading-relaxed text-muted-foreground sm:text-lg"
@@ -342,8 +369,7 @@ function DecisionAuditPage() {
             <Reveal delay={200}>
               <Live
                 id="problem.punch"
-                defaultValue="The maybe is not free. It is costing you months and money you have never written down.
-Most founders do not need another plan. They need the next step named with enough precision that delay stops being the default."
+                defaultValue="One decision. One documented next step."
                 as="p"
                 multiline
                 className="mt-16 max-w-3xl font-display text-2xl leading-snug font-semibold italic text-accent sm:text-4xl"
@@ -355,10 +381,10 @@ Most founders do not need another plan. They need the next step named with enoug
         <section className="border-t border-hairline px-6 py-24 sm:px-10 sm:py-32">
           <div className="mx-auto max-w-5xl">
             <Reveal>
-              <SectionLabel id="mechanism.label" defaultValue="The mechanism" />
+              <SectionLabel id="mechanism.label" defaultValue="The session" />
               <Live
                 id="mechanism.headline"
-                defaultValue="What happens in the 40 minutes"
+                defaultValue="What you document and keep"
                 as="h2"
                 className="mt-4 font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] uppercase sm:text-5xl"
               />
@@ -399,14 +425,14 @@ Most founders do not need another plan. They need the next step named with enoug
             <Reveal delay={80}>
               <Live
                 id="mechanism.close"
-                defaultValue="This session runs real work on one decision so you can move."
+                defaultValue="You examine one decision. Then you leave with a written next step."
                 as="p"
                 className="mt-10 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg"
               />
             </Reveal>
             <CtaBlock
               microcopyId="mechanism.ctaNote"
-              microcopyDefault="Make your next moves in alignment with your highest potential."
+              microcopyDefault={CTA_NOTE}
             />
             <ProcessDiagram />
           </div>
@@ -417,139 +443,21 @@ Most founders do not need another plan. They need the next step named with enoug
             <Reveal>
               <Live
                 id="outcomes.headline"
-                defaultValue="You leave with exact clarity on what you should do next"
+                defaultValue="You leave with a written record of the session"
                 as="h2"
                 multiline
                 className="font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] text-balance uppercase sm:text-5xl"
               />
               <Live
                 id="outcomes.intro"
-                defaultValue="These are examples of what people walked away with."
+                defaultValue="The Decision Audit produces a documented sheet. Participants keep the decision, the cost of delay, the assumptions recorded in their own words, and one practical next action."
                 as="p"
                 className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg"
               />
             </Reveal>
-
-            <div className="mt-12 grid gap-4 sm:grid-cols-3">
-              {CASE_STUDY_VIDEOS.map((v, i) => (
-                <Reveal key={v.youtubeId} delay={i * 80} variant="scale">
-                  <div className="overflow-hidden border border-hairline bg-card">
-                    <LocalVideoPreview
-                      src={v.src}
-                      poster={v.poster}
-                      title={`${get(`case.${i}.name`, v.name)} - ${get(`case.${i}.role`, v.role)}`}
-                    />
-                    <div className="flex items-center justify-between gap-3 border-t border-hairline px-4 py-3">
-                      <div className="min-w-0">
-                        <Live
-                          id={`case.${i}.name`}
-                          defaultValue={v.name}
-                          className="block truncate text-sm font-semibold"
-                        />
-                        <Live
-                          id={`case.${i}.role`}
-                          defaultValue={v.role}
-                          className="block truncate text-xs text-muted-foreground"
-                        />
-                      </div>
-                      <a
-                        href={`https://www.youtube.com/watch?v=${v.youtubeId}`}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="shrink-0 text-[10px] font-bold tracking-[0.12em] text-accent uppercase hover:text-accent-soft"
-                      >
-                        YouTube
-                      </a>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {youtubeOnly.map((t, i) => (
-                <Reveal key={`yt-${t.youtubeId}-${i}`} delay={(i % 3) * 70} variant="scale">
-                  <div className="overflow-hidden border border-hairline bg-card">
-                    <YoutubePreview
-                      youtubeId={t.youtubeId!}
-                      title={get(`yt.${i}.name`, t.name)}
-                      {...(t.poster ? { poster: t.poster } : {})}
-                    />
-                    <blockquote className="border-t border-hairline p-5 font-display text-base leading-snug">
-                      &ldquo;
-                      <Live
-                        id={`yt.${i}.quote`}
-                        defaultValue={t.quote}
-                        multiline
-                        className="inline"
-                      />
-                      &rdquo;
-                    </blockquote>
-                    <div className="flex items-center justify-between gap-3 px-5 pb-5">
-                      <div className="min-w-0">
-                        <Live
-                          id={`yt.${i}.name`}
-                          defaultValue={t.name}
-                          className="block truncate text-sm font-semibold"
-                        />
-                        <Live
-                          id={`yt.${i}.role`}
-                          defaultValue={t.role}
-                          className="block truncate text-xs text-muted-foreground"
-                        />
-                      </div>
-                      <span className="shrink-0 border border-accent px-2 py-1 text-[10px] font-bold tracking-[0.14em] text-accent uppercase">
-                        YouTube
-                      </span>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            <div className="mt-10 grid gap-px bg-hairline sm:grid-cols-2">
-              {verified.map((t, i) => (
-                <Reveal key={`${t.name}-${i}`} delay={(i % 4) * 70} variant="scale">
-                  <figure className="testimonial-card flex h-full flex-col justify-between gap-8 bg-card p-8">
-                    <blockquote className="font-display text-lg leading-snug sm:text-xl">
-                      &ldquo;
-                      <Live
-                        id={`verified.${i}.quote`}
-                        defaultValue={t.quote}
-                        multiline
-                        className="inline"
-                      />
-                      &rdquo;
-                    </blockquote>
-                    <figcaption className="flex items-center gap-4 border-t border-hairline pt-4">
-                      {t.avatar ? (
-                        <img
-                          src={t.avatar}
-                          alt=""
-                          className="h-12 w-12 shrink-0 rounded-full object-cover"
-                          loading="lazy"
-                        />
-                      ) : null}
-                      <div className="min-w-0 flex-1">
-                        <Live
-                          id={`verified.${i}.name`}
-                          defaultValue={t.name}
-                          className="block text-sm font-semibold"
-                        />
-                        <Live
-                          id={`verified.${i}.role`}
-                          defaultValue={t.role}
-                          className="block text-sm text-muted-foreground"
-                        />
-                      </div>
-                      <span className="shrink-0 border border-accent px-2 py-1 text-[10px] font-bold tracking-[0.14em] text-accent uppercase">
-                        Verified
-                      </span>
-                    </figcaption>
-                  </figure>
-                </Reveal>
-              ))}
-            </div>
+            <Reveal delay={80} className="mt-12">
+              <AuditSheet />
+            </Reveal>
           </div>
         </section>
 
@@ -558,7 +466,7 @@ Most founders do not need another plan. They need the next step named with enoug
             <Reveal>
               <Live
                 id="fit.headline"
-                defaultValue="This is for a specific kind of person"
+                defaultValue="This session is designed for"
                 as="h2"
                 className="font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] uppercase sm:text-5xl"
               />
@@ -566,33 +474,26 @@ Most founders do not need another plan. They need the next step named with enoug
             <div className="mt-14 grid gap-px bg-hairline md:grid-cols-2">
               <Reveal>
                 <div className="h-full bg-card p-8">
-                  <SectionLabel id="fit.forLabel" defaultValue="For" />
+                  <SectionLabel id="fit.forLabel" defaultValue="Designed for" />
                   <ul className="mt-6 space-y-5 text-base leading-relaxed">
                     <li>
                       <Live
                         id="fit.for1"
-                        defaultValue="Founders, executives and operators with a real decision on the table."
+                        defaultValue="Founders, executives and operators examining a real business decision"
                         multiline
                       />
                     </li>
                     <li>
                       <Live
                         id="fit.for2"
-                        defaultValue="People who have done the mindset work and hit the same wall anyway."
+                        defaultValue="People willing to discuss one specific decision"
                         multiline
                       />
                     </li>
                     <li>
                       <Live
                         id="fit.for3"
-                        defaultValue="Sceptics, genuinely. The method was built to be tested, not believed."
-                        multiline
-                      />
-                    </li>
-                    <li>
-                      <Live
-                        id="fit.for4"
-                        defaultValue="People willing to leave with one next step they will actually take."
+                        defaultValue="People who want a documented next step"
                         multiline
                       />
                     </li>
@@ -601,29 +502,25 @@ Most founders do not need another plan. They need the next step named with enoug
               </Reveal>
               <Reveal delay={100}>
                 <div className="h-full bg-card p-8">
-                  <SectionLabel id="fit.notLabel" defaultValue="Not for" />
+                  <SectionLabel id="fit.notLabel" defaultValue="Not designed for" />
                   <ul className="mt-6 space-y-5 text-base leading-relaxed text-muted-foreground">
                     <li>
-                      <Live id="fit.not1" defaultValue="Anyone looking for a miracle or a guru." />
+                      <Live
+                        id="fit.not1"
+                        defaultValue="Medical, psychological or crisis support"
+                      />
                     </li>
                     <li>
                       <Live
                         id="fit.not2"
-                        defaultValue="Anyone in acute crisis needing clinical care (not therapy or medical treatment)."
+                        defaultValue="Anyone seeking a guaranteed personal, health or financial outcome"
                         multiline
                       />
                     </li>
                     <li>
                       <Live
                         id="fit.not3"
-                        defaultValue="Anyone unwilling to put one real decision on the table."
-                        multiline
-                      />
-                    </li>
-                    <li>
-                      <Live
-                        id="fit.not4"
-                        defaultValue="Anyone hunting for another multi-month plan to hide inside"
+                        defaultValue="General curiosity without a specific decision to examine"
                         multiline
                       />
                     </li>
@@ -653,7 +550,7 @@ Most founders do not need another plan. They need the next step named with enoug
                 <div className="overflow-hidden">
                   <img
                     src={ASSETS.portrait}
-                    alt="Adrian Taffinder, the Subconscious Surgeon"
+                    alt="Adrian Taffinder"
                     loading="lazy"
                     className="w-full grayscale"
                   />
@@ -663,25 +560,18 @@ Most founders do not need another plan. They need the next step named with enoug
                 <SectionLabel id="about.label" defaultValue="About" />
                 <Live
                   id="about.headline"
-                  defaultValue="The Subconscious Surgeon"
+                  defaultValue="Adrian Taffinder"
                   as="h2"
                   className="mt-4 font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] uppercase sm:text-5xl"
                 />
                 <Live
                   id="about.body"
-                  defaultValue="Adrian Taffinder is not a therapist, not a guru, not a hype coach.
-He is a precision practitioner. Language is his instrument.
-Decades of practice. Average client relationship: more than three years.
-Based in Ubud. Works worldwide."
+                  defaultValue="Adrian Taffinder facilitates structured decision sessions for founders and operators. His work uses language, documentation and guided discussion to examine how a person is approaching a business decision.
+
+Adrian is based in Ubud and works with clients internationally. The Decision Audit is a personal-development service, not healthcare, therapy or medical treatment."
                   as="p"
                   multiline
                   className="mt-8 text-base leading-relaxed text-muted-foreground sm:text-lg"
-                />
-                <Live
-                  id="about.punch"
-                  defaultValue="Not managed. Not reframed. Changed."
-                  as="p"
-                  className="mt-8 font-display text-2xl font-semibold italic text-accent sm:text-3xl"
                 />
               </Reveal>
             </div>
@@ -714,44 +604,42 @@ Based in Ubud. Works worldwide."
             </Reveal>
             <CtaBlock
               microcopyId="faq.ctaNote"
-              microcopyDefault="Make your next moves in alignment with your highest potential."
+              microcopyDefault={CTA_NOTE}
             />
           </div>
         </section>
 
-        <section className="border-t border-hairline px-6 py-24 sm:px-10 sm:py-32">
+        <section
+          id="book"
+          className="scroll-mt-3 border-t border-hairline px-6 py-16 sm:scroll-mt-6 sm:px-10 sm:py-32"
+        >
           <div className="mx-auto max-w-4xl">
-            <Reveal>
-              <Live
-                id="booking.headline"
-                defaultValue="Leave knowing exactly what to do next."
-                as="h2"
-                multiline
-                className="font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] text-balance uppercase sm:text-5xl"
-              />
-              <Live
-                id="booking.body"
-                defaultValue="Ten audits this month.
-One decision. The cost. The belief. The baseline. The next step.
+            <Live
+              id="booking.headline"
+              defaultValue="Leave with one practical next step."
+              as="h2"
+              multiline
+              className="font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] text-balance uppercase sm:text-5xl"
+            />
+            <Live
+              id="booking.body"
+              defaultValue="Ten audits this month.
+Document the decision, the cost of delay, the assumptions and the next action.
 All written down. Yours to keep."
-                as="p"
-                multiline
-                className="mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg"
-              />
-              <div className="mt-10 flex flex-col items-start gap-4">
-                <CtaButton />
-                <Live
-                  id="booking.ctaNote"
-                  defaultValue="Make your next moves in alignment with your highest potential."
-                  as="p"
-                  multiline
-                  className="max-w-md text-sm text-muted-foreground"
-                />
-              </div>
-            </Reveal>
-            <Reveal delay={120} className="mt-12">
+              as="p"
+              multiline
+              className="mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+            />
+            <div className="mt-10">
               <CalendlyEmbed />
-            </Reveal>
+            </div>
+            <Live
+              id="booking.ctaNote"
+              defaultValue={CTA_NOTE}
+              as="p"
+              multiline
+              className="mt-6 max-w-md text-sm text-muted-foreground"
+            />
           </div>
         </section>
 
@@ -776,9 +664,9 @@ Others want a place to practise with peers who hold the same standard."
                 />
                 <Live
                   id="ashta.p2"
-                  defaultValue="The Ashta Project is a peer community in carefully curated groups of eight.
-If the audit shows that is the right next environment, Adrian will say so.
-If deeper private work is the better fit, he will say that instead."
+                  defaultValue="The Ashta Project is a peer community in groups of eight.
+If the audit shows that's the right next environment, Adrian will say so.
+If private work is the better fit, he'll say that instead."
                   as="p"
                   multiline
                 />
@@ -800,17 +688,10 @@ If deeper private work is the better fit, he will say that instead."
         </section>
       </main>
 
-      <footer className="border-t border-hairline px-6 pt-16 pb-32 sm:px-10 sm:pb-16">
-        <div className="mx-auto flex max-w-5xl flex-col gap-8">
-          <div className="flex flex-col gap-6 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
-            <img
-              src={ASSETS.logo}
-              alt="Subconscious Surgery"
-              loading="lazy"
-              className="h-7 w-auto sm:h-8"
-              width={480}
-              height={96}
-            />
+      <footer className="border-t border-hairline px-6 pt-16 pb-[calc(8rem+env(safe-area-inset-bottom))] sm:px-10 sm:pb-16">
+        <div className="mx-auto flex max-w-5xl flex-col items-start gap-8">
+          <div className="flex w-full flex-col items-start gap-6 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
+            <BrandLogo placement="footer" loading="lazy" />
             <Live id="footer.location" defaultValue="Sayan, Ubud, Bali" className="inline" />
             <a className="hover:text-accent" href="mailto:subconscioussurgery@gmail.com">
               <Live
@@ -847,19 +728,13 @@ If deeper private work is the better fit, he will say that instead."
             <a className="hover:text-accent" href="https://www.subconscioussurgery.com/legal/terms">
               <Live id="footer.terms" defaultValue="Terms of Use" className="inline" />
             </a>
-            <a
-              className="hover:text-accent"
-              href="https://www.subconscioussurgery.com/legal/health"
-            >
-              <Live id="footer.health" defaultValue="Health & Wellbeing" className="inline" />
-            </a>
           </div>
         </div>
       </footer>
 
       <div
         data-visible={stickyVisible}
-        className="sticky-cta fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-background/95 p-3 backdrop-blur sm:hidden"
+        className="sticky-cta fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-background/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur sm:hidden"
       >
         <CtaButton className="w-full" onHover={collapse} />
       </div>

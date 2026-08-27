@@ -229,10 +229,10 @@ function DecisionAuditPage() {
             height={96}
           />
         </div>
-        <div className="relative flex min-h-[calc(100svh-2.75rem)] flex-col px-6 pt-4 pb-5 sm:min-h-[calc(100svh-3rem)] sm:px-10 sm:pt-5 sm:pb-6 lg:px-14">
+        <div className="relative flex flex-col pt-4 pb-5 sm:pt-5 sm:pb-6">
           <QuantumField collapsed={collapsed} targetRef={underlineRef} />
-          <div className="relative z-10 mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col items-center text-center">
-            <div className="w-full max-w-3xl shrink-0">
+          <div className="relative z-10 flex w-full flex-col items-center text-center">
+            <div className="flex w-full max-w-3xl flex-col items-center px-6 sm:px-10 lg:px-14">
               <Live
                 id="hero.eyebrow"
                 defaultValue="The Decision Audit | Subconscious Surgery™"
@@ -241,7 +241,7 @@ function DecisionAuditPage() {
               />
 
               <h1
-                className="hero-copy mt-3 font-sans text-[2.15rem] leading-[0.98] font-bold tracking-[-0.04em] uppercase sm:mt-3 sm:text-5xl lg:text-[3.1rem]"
+                className="hero-copy mt-3 w-full font-sans text-[2.15rem] leading-[0.98] font-bold tracking-[-0.04em] uppercase sm:mt-3 sm:text-5xl lg:text-[3.1rem]"
                 data-step="2"
               >
                 <Live id="hero.line1" defaultValue="You already know the move." className="block" />
@@ -259,28 +259,26 @@ function DecisionAuditPage() {
                 defaultValue="A free 40-minute working session for high performers who need clarity."
                 as="p"
                 multiline
-                className="hero-copy mt-3 max-w-xl text-base leading-relaxed text-muted-foreground sm:mt-4 sm:text-lg"
+                className="hero-copy mt-3 w-full text-center text-base leading-relaxed text-muted-foreground sm:mt-4 sm:text-lg"
               />
             </div>
 
-            <div className="hero-copy relative mt-4 min-h-[12rem] w-full flex-1 sm:mt-5 sm:min-h-[16rem]" data-step="3">
-              <div className="@container-size absolute inset-0 flex items-center justify-center">
-                <YoutubeAutoplay
-                  youtubeId={HERO_VSL_ID}
-                  title="Decision Audit VSL"
-                  className="aspect-video h-auto max-h-full w-[min(100%,calc(100cqh*16/9))]"
-                />
-              </div>
+            <div className="hero-copy mt-4 flex w-full justify-center px-6 sm:mt-5 sm:px-10 lg:px-14" data-step="3">
+              <YoutubeAutoplay
+                youtubeId={HERO_VSL_ID}
+                title="Decision Audit VSL"
+                className="aspect-[9/16] h-[min(72svh,42rem)] w-auto max-w-full"
+              />
             </div>
 
-            <div className="hero-copy mt-4 flex shrink-0 flex-col items-center gap-3 sm:mt-5 sm:gap-4" data-step="4">
+            <div className="hero-copy mt-4 flex w-full max-w-3xl flex-col items-center gap-3 px-6 sm:mt-5 sm:gap-4 sm:px-10 lg:px-14" data-step="4">
               <CtaButton onHover={collapse} />
               <Live
                 id="hero.ctaNote"
                 defaultValue="Make your next moves in alignment with your highest potential."
                 as="p"
                 multiline
-                className="max-w-md text-sm text-muted-foreground"
+                className="w-full max-w-md text-center text-sm text-muted-foreground"
               />
             </div>
           </div>

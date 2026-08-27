@@ -20,7 +20,9 @@ export function YoutubePreview({
 
   if (playing) {
     return (
-      <div className={`relative aspect-video overflow-hidden bg-foreground ${className}`}>
+      <div
+        className={`relative overflow-hidden bg-foreground ${className.includes("aspect-") ? "" : "aspect-video"} ${className}`}
+      >
         <iframe
           title={title}
           src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0`}
@@ -37,7 +39,7 @@ export function YoutubePreview({
     <button
       type="button"
       onClick={() => setPlaying(true)}
-      className={`group relative aspect-video w-full overflow-hidden bg-foreground text-left ${className}`}
+      className={`group relative w-full overflow-hidden bg-foreground text-left ${className.includes("aspect-") ? "" : "aspect-video"} ${className}`}
       aria-label={`Play video: ${title}`}
     >
       <img
@@ -98,7 +100,7 @@ type YoutubeAutoplayProps = {
  */
 export function YoutubeAutoplay({ youtubeId, title, className = "" }: YoutubeAutoplayProps) {
   const [mode, setMode] = useState<"autoplay" | "click">("autoplay");
-  const poster = `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
+  const poster = `https://i.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`;
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -134,4 +136,3 @@ export function YoutubeAutoplay({ youtubeId, title, className = "" }: YoutubeAut
     </div>
   );
 }
-

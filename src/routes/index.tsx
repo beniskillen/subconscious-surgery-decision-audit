@@ -1,14 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { AuditSheet } from "@/components/decision-audit/AuditSheet";
 import { CalendlyEmbed } from "@/components/decision-audit/CalendlyEmbed";
 import { QuantumField } from "@/components/decision-audit/QuantumField";
 import { GhostNumeral } from "@/components/decision-audit/GhostNumeral";
 import { ProcessDiagram } from "@/components/decision-audit/ProcessDiagram";
 import { SurgeryPhases } from "@/components/decision-audit/SurgeryPhases";
-import { YoutubeAutoplay } from "@/components/decision-audit/VideoPreview";
-import { Live, LiveCopyProvider } from "@/components/decision-audit/LiveCopy";
+import {
+  CASE_STUDY_VIDEOS,
+  TESTIMONIALS,
+} from "@/components/decision-audit/testimonials";
+import {
+  LocalVideoPreview,
+  YoutubeAutoplay,
+  YoutubePreview,
+} from "@/components/decision-audit/VideoPreview";
+import { Live, LiveCopyProvider, useLiveCopy } from "@/components/decision-audit/LiveCopy";
 import { Reveal, useStickyCta } from "@/components/decision-audit/useReveal";
 import {
   Accordion,
@@ -27,6 +34,7 @@ const PAGE_DESCRIPTION =
 const ASSETS = {
   logo: asset("brand/logo.png"),
   portrait: asset("brand/adrian-portrait.png"),
+  youtube: asset("brand/social/youtube.png"),
   instagram: asset("brand/social/instagram.png"),
   facebook: asset("brand/social/facebook.png"),
   whatsapp: asset("brand/social/whatsapp.png"),
@@ -111,6 +119,7 @@ const FAQS = [
   },
 ];
 const SOCIALS = [
+  { name: "YouTube", href: "https://www.youtube.com/@subconscioussurgery144", icon: ASSETS.youtube },
   { name: "Instagram", href: "https://www.instagram.com/adrian_taffinder", icon: ASSETS.instagram },
   { name: "Facebook", href: "https://www.facebook.com/subconscioussurgery", icon: ASSETS.facebook },
   { name: "WhatsApp", href: "https://wa.me/447572431214", icon: ASSETS.whatsapp },
@@ -236,6 +245,7 @@ function DecisionAuditPage() {
   const [collapsed, setCollapsed] = useState(false);
   const stickyVisible = useStickyCta(heroRef);
 
+  const { get } = useLiveCopy();
   const collapse = useCallback(() => setCollapsed(true), []);
 
   useEffect(() => {
@@ -255,6 +265,11 @@ function DecisionAuditPage() {
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, [collapsed]);
+
+  const verified = TESTIMONIALS.filter((t) => !t.youtubeId);
+  const youtubeOnly = TESTIMONIALS.filter(
+    (t) => t.youtubeId && !CASE_STUDY_VIDEOS.some((c) => c.youtubeId === t.youtubeId),
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -443,21 +458,139 @@ function DecisionAuditPage() {
             <Reveal>
               <Live
                 id="outcomes.headline"
-                defaultValue="You leave with a written record of the session"
+                defaultValue="You leave with exact clarity on what you should do next"
                 as="h2"
                 multiline
                 className="font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] text-balance uppercase sm:text-5xl"
               />
               <Live
                 id="outcomes.intro"
-                defaultValue="The Decision Audit produces a documented sheet. Participants keep the decision, the cost of delay, the assumptions recorded in their own words, and one practical next action."
+                defaultValue="These are examples of what people walked away with."
                 as="p"
                 className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg"
               />
             </Reveal>
-            <Reveal delay={80} className="mt-12">
-              <AuditSheet />
-            </Reveal>
+
+            <div className="mt-12 grid gap-4 sm:grid-cols-3">
+              {CASE_STUDY_VIDEOS.map((v, i) => (
+                <Reveal key={v.youtubeId} delay={i * 80} variant="scale">
+                  <div className="overflow-hidden border border-hairline bg-card">
+                    <LocalVideoPreview
+                      src={v.src}
+                      poster={v.poster}
+                      title={`${get(`case.${i}.name`, v.name)} - ${get(`case.${i}.role`, v.role)}`}
+                    />
+                    <div className="flex items-center justify-between gap-3 border-t border-hairline px-4 py-3">
+                      <div className="min-w-0">
+                        <Live
+                          id={`case.${i}.name`}
+                          defaultValue={v.name}
+                          className="block truncate text-sm font-semibold"
+                        />
+                        <Live
+                          id={`case.${i}.role`}
+                          defaultValue={v.role}
+                          className="block truncate text-xs text-muted-foreground"
+                        />
+                      </div>
+                      <a
+                        href={`https://www.youtube.com/watch?v=${v.youtubeId}`}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="shrink-0 text-[10px] font-bold tracking-[0.12em] text-accent uppercase hover:text-accent-soft"
+                      >
+                        YouTube
+                      </a>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {youtubeOnly.map((t, i) => (
+                <Reveal key={`yt-${t.youtubeId}-${i}`} delay={(i % 3) * 70} variant="scale">
+                  <div className="overflow-hidden border border-hairline bg-card">
+                    <YoutubePreview
+                      youtubeId={t.youtubeId!}
+                      title={get(`yt.${i}.name`, t.name)}
+                      {...(t.poster ? { poster: t.poster } : {})}
+                    />
+                    <blockquote className="border-t border-hairline p-5 font-display text-base leading-snug">
+                      &ldquo;
+                      <Live
+                        id={`yt.${i}.quote`}
+                        defaultValue={t.quote}
+                        multiline
+                        className="inline"
+                      />
+                      &rdquo;
+                    </blockquote>
+                    <div className="flex items-center justify-between gap-3 px-5 pb-5">
+                      <div className="min-w-0">
+                        <Live
+                          id={`yt.${i}.name`}
+                          defaultValue={t.name}
+                          className="block truncate text-sm font-semibold"
+                        />
+                        <Live
+                          id={`yt.${i}.role`}
+                          defaultValue={t.role}
+                          className="block truncate text-xs text-muted-foreground"
+                        />
+                      </div>
+                      <span className="shrink-0 border border-accent px-2 py-1 text-[10px] font-bold tracking-[0.14em] text-accent uppercase">
+                        YouTube
+                      </span>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <div className="mt-10 grid gap-px bg-hairline sm:grid-cols-2">
+              {verified.map((t, i) => (
+                <Reveal key={`${t.name}-${i}`} delay={(i % 4) * 70} variant="scale">
+                  <figure className="testimonial-card flex h-full flex-col justify-between gap-8 bg-card p-8">
+                    <blockquote className="font-display text-lg leading-snug sm:text-xl">
+                      &ldquo;
+                      <Live
+                        id={`verified.${i}.quote`}
+                        defaultValue={t.quote}
+                        multiline
+                        className="inline"
+                      />
+                      &rdquo;
+                    </blockquote>
+                    <figcaption className="flex items-center gap-4 border-t border-hairline pt-4">
+                      {t.avatar ? (
+                        <img
+                          src={t.avatar}
+                          alt=""
+                          className="h-12 w-12 shrink-0 rounded-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : null}
+                      <div className="min-w-0 flex-1">
+                        <Live
+                          id={`verified.${i}.name`}
+                          defaultValue={t.name}
+                          className="block text-sm font-semibold"
+                        />
+                        <Live
+                          id={`verified.${i}.role`}
+                          defaultValue={t.role}
+                          className="block text-sm text-muted-foreground"
+                        />
+                      </div>
+                      <span className="shrink-0 border border-accent px-2 py-1 text-[10px] font-bold tracking-[0.14em] text-accent uppercase">
+                        Verified
+                      </span>
+                    </figcaption>
+                  </figure>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -550,7 +683,7 @@ function DecisionAuditPage() {
                 <div className="overflow-hidden">
                   <img
                     src={ASSETS.portrait}
-                    alt="Adrian Taffinder"
+                    alt="Adrian Taffinder, the Subconscious Surgeon"
                     loading="lazy"
                     className="w-full grayscale"
                   />
@@ -560,18 +693,25 @@ function DecisionAuditPage() {
                 <SectionLabel id="about.label" defaultValue="About" />
                 <Live
                   id="about.headline"
-                  defaultValue="Adrian Taffinder"
+                  defaultValue="The Subconscious Surgeon"
                   as="h2"
                   className="mt-4 font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] uppercase sm:text-5xl"
                 />
                 <Live
                   id="about.body"
-                  defaultValue="Adrian Taffinder facilitates structured decision sessions for founders and operators. His work uses language, documentation and guided discussion to examine how a person is approaching a business decision.
-
-Adrian is based in Ubud and works with clients internationally. The Decision Audit is a personal-development service, not healthcare, therapy or medical treatment."
+                  defaultValue="Adrian Taffinder is not a therapist, not a guru, not a hype coach.
+He is a precision practitioner. Language is his instrument.
+Decades of practice. Average client relationship: more than three years.
+Based in Ubud. Works worldwide."
                   as="p"
                   multiline
                   className="mt-8 text-base leading-relaxed text-muted-foreground sm:text-lg"
+                />
+                <Live
+                  id="about.punch"
+                  defaultValue="Not managed. Not reframed. Changed."
+                  as="p"
+                  className="mt-8 font-display text-2xl font-semibold italic text-accent sm:text-3xl"
                 />
               </Reveal>
             </div>

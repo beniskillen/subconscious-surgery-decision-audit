@@ -94,14 +94,6 @@ const MECHANISM = [
 
 const FAQS = [
   {
-    q: "Is this a sales call?",
-    a: "No. The audit is the value. You leave with written outputs either way.",
-  },
-  {
-    q: "Is this a 90-day plan or programme pitch?",
-    a: "No. One decision. A documented next step.",
-  },
-  {
     q: "Is this woo?",
     a: "The right starting position is scepticism. Good. Everything is stated and written down.",
   },
@@ -331,13 +323,23 @@ function DecisionAuditPage() {
             </div>
           </div>
         </div>
-        <div className="hero-copy border-t border-hairline px-6 py-5 sm:px-10 sm:py-6" data-step="5">
+        <div className="hero-copy border-t border-hairline px-6 py-10 sm:px-10 sm:py-14" data-step="5">
           <Live
             id="hero.trust"
-            defaultValue="A structured decision-making session. Not healthcare, therapy or medical treatment."
+            defaultValue="The ceiling on your performance isn't your strategy.
+
+It isn't your discipline. It isn't your circumstances.
+
+It's a belief, held below the level of consciousness, that you don't even know is running you."
             as="p"
             multiline
-            className="mx-auto max-w-3xl text-center text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase"
+            className="mx-auto max-w-2xl text-center font-display text-xl leading-snug sm:text-2xl"
+          />
+          <Live
+            id="hero.trustPunch"
+            defaultValue="One session can change that. Permanently."
+            as="p"
+            className="mx-auto mt-6 max-w-2xl text-center font-display text-xl font-semibold italic text-accent sm:text-2xl"
           />
         </div>
       </header>
@@ -690,26 +692,28 @@ function DecisionAuditPage() {
                 </div>
               </Reveal>
               <Reveal delay={100}>
-                <SectionLabel id="about.label" defaultValue="About" />
+                <SectionLabel id="about.label" defaultValue="Adrian Taffinder" />
                 <Live
                   id="about.headline"
-                  defaultValue="The Subconscious Surgeon"
+                  defaultValue="AKA The Subconscious Surgeon"
                   as="h2"
                   className="mt-4 font-sans text-3xl leading-[1.05] font-bold tracking-[-0.03em] uppercase sm:text-5xl"
                 />
                 <Live
                   id="about.body"
-                  defaultValue="Adrian Taffinder is not a therapist, not a guru, not a hype coach.
+                  defaultValue="Adrian is a veteran in the personal transformation space. Having travelled the world as a speaker, he has spent decades on a single question: what actually produces meaningful behaviour change.
+
+Not more strategy. Not more discipline. A precise change at the level of belief.
+
 He is a precision practitioner. Language is his instrument.
-Decades of practice. Average client relationship: more than three years.
-Based in Ubud. Works worldwide."
+Decades of practice."
                   as="p"
                   multiline
                   className="mt-8 text-base leading-relaxed text-muted-foreground sm:text-lg"
                 />
                 <Live
                   id="about.punch"
-                  defaultValue="Not managed. Not reframed. Changed."
+                  defaultValue="Find out what sits below the surface"
                   as="p"
                   className="mt-8 font-display text-2xl font-semibold italic text-accent sm:text-3xl"
                 />

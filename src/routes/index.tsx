@@ -299,7 +299,7 @@ function DecisionAuditPage() {
                 defaultValue="A free 40-minute working session for founders and operators. Document the decision, estimate the cost of delay, examine the assumptions involved and leave with one practical next action."
                 as="p"
                 multiline
-                className="hero-copy mt-3 w-full text-center text-base leading-relaxed text-muted-foreground sm:mt-4 sm:text-lg"
+                className="hero-copy mx-auto mt-3 w-full max-w-xl text-center text-base leading-relaxed text-muted-foreground sm:mt-4 sm:text-lg"
               />
             </div>
 

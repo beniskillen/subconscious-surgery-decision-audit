@@ -26,8 +26,8 @@ import {
 
 import { asset } from "@/lib/asset";
 
-const PAGE_URL = "https://beniskillen.github.io/decision-audit/";
-const PAGE_IMAGE = "https://beniskillen.github.io/decision-audit/brand/logo.png";
+const PAGE_URL = "https://discovery.subconscioussurgery.com/";
+const PAGE_IMAGE = "https://discovery.subconscioussurgery.com/brand/logo.png";
 const PAGE_DESCRIPTION =
   "A free 40-minute working session for founders and operators. Document one business decision and leave with one practical next action.";
 
@@ -56,6 +56,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:description", content: PAGE_DESCRIPTION },
       { name: "twitter:image", content: PAGE_IMAGE },
     ],
+    links: [{ rel: "canonical", href: PAGE_URL }],
   }),
   component: Index,
 });
@@ -303,15 +304,7 @@ function DecisionAuditPage() {
               />
             </div>
 
-            <div className="hero-copy mt-4 flex w-full justify-center px-6 sm:mt-5 sm:px-10 lg:px-14" data-step="3">
-              <YoutubeAutoplay
-                youtubeId={HERO_VSL_ID}
-                title="Decision Audit VSL"
-                className="aspect-[9/16] h-[min(72svh,42rem)] w-auto max-w-full"
-              />
-            </div>
-
-            <div className="hero-copy mt-4 flex w-full max-w-3xl flex-col items-center gap-3 px-6 sm:mt-5 sm:gap-4 sm:px-10 lg:px-14" data-step="4">
+            <div className="hero-copy mt-4 flex w-full max-w-3xl flex-col items-center gap-3 px-6 sm:mt-5 sm:gap-4 sm:px-10 lg:px-14" data-step="3">
               <CtaButton onHover={collapse} />
               <Live
                 id="hero.ctaNote"
@@ -319,6 +312,14 @@ function DecisionAuditPage() {
                 as="p"
                 multiline
                 className="w-full max-w-md text-center text-sm text-muted-foreground"
+              />
+            </div>
+
+            <div className="hero-copy mt-4 flex w-full justify-center px-6 sm:mt-5 sm:px-10 lg:px-14" data-step="4">
+              <YoutubeAutoplay
+                youtubeId={HERO_VSL_ID}
+                title="Decision Audit VSL"
+                className="aspect-[9/16] h-[min(72svh,42rem)] w-auto max-w-full"
               />
             </div>
           </div>

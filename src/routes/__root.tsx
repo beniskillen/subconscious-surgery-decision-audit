@@ -12,6 +12,12 @@ import { Analytics } from "@vercel/analytics/react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { initPixel, pixelBaseCode, pixelNoscriptSrc } from "../lib/meta-pixel";
+
+const PAGE_URL = "https://discovery.subconscioussurgery.com/";
+const PAGE_IMAGE = "https://discovery.subconscioussurgery.com/brand/logo.png";
+const PAGE_DESCRIPTION =
+  "A free 40-minute working session for founders and operators. Document one business decision and leave with one practical next action.";
 
 function NotFoundComponent() {
   return (
@@ -81,38 +87,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "The Decision Audit | Subconscious Surgery" },
       {
         name: "description",
-        content:
-          "A free 40-minute working session for founders and operators. Document one business decision and leave with one practical next action.",
+        content: PAGE_DESCRIPTION,
       },
       { name: "author", content: "Subconscious Surgery" },
       { property: "og:title", content: "The Decision Audit | Subconscious Surgery" },
       {
         property: "og:description",
-        content:
-          "A free 40-minute working session for founders and operators. Document one business decision and leave with one practical next action.",
+        content: PAGE_DESCRIPTION,
       },
       { property: "og:type", content: "website" },
       {
         property: "og:url",
-        content: "https://beniskillen.github.io/decision-audit/",
+        content: PAGE_URL,
       },
       {
         property: "og:image",
-        content: "https://beniskillen.github.io/decision-audit/brand/logo.png",
+        content: PAGE_IMAGE,
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "The Decision Audit | Subconscious Surgery" },
       {
         name: "twitter:description",
-        content:
-          "A free 40-minute working session for founders and operators. Document one business decision and leave with one practical next action.",
+        content: PAGE_DESCRIPTION,
       },
       {
         name: "twitter:image",
-        content: "https://beniskillen.github.io/decision-audit/brand/logo.png",
+        content: PAGE_IMAGE,
       },
     ],
     links: [
+      { rel: "canonical", href: PAGE_URL },
       {
         rel: "stylesheet",
         href: appCss,
@@ -137,8 +141,18 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: pixelBaseCode() }} />
       </head>
       <body className="bg-background text-foreground antialiased">
+        <noscript>
+          <img
+            height={1}
+            width={1}
+            style={{ display: "none" }}
+            src={pixelNoscriptSrc()}
+            alt=""
+          />
+        </noscript>
         {children}
         <Analytics />
         <Scripts />
@@ -149,6 +163,9 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useEffect(() => {
+    initPixel();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

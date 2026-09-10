@@ -32,5 +32,6 @@ dist-ssr
 *.sw?
 .vercel
 .env*
+!.env.example
 .cursor
 discovery-domain-handoff-report.md

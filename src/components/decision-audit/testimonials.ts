@@ -1,4 +1,7 @@
 import { asset } from "@/lib/asset";
+import { CLAIM_SCAN_HITS } from "./claim-scan";
+
+export { CLAIM_SCAN_HITS };
 
 export type Testimonial = {
   quote: string;
@@ -26,6 +29,9 @@ export type CaseStudyVideo = {
 /**
  * Client language from Subconscious Surgery YouTube captions and
  * https://www.subconscioussurgery.com/testimonials (avatars + LinkedIn quotes).
+ *
+ * Kill-list hits (coach, anxiety, finances, life-changing, mental health) are
+ * listed in ./claim-scan.ts. Do not silently rewrite these quotes.
  */
 export const CASE_STUDY_VIDEOS: CaseStudyVideo[] = [
   {
@@ -62,6 +68,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
+      // CLAIM SCAN: "life-changing" — see claim-scan.ts. Do not rewrite.
       "Adrian never ceases to amaze me with his knowledge. I have been working with him for well over 3 years now. And it has been life-changing to say the least. More people need to experience what he offers.",
     name: "Tristen",
     role: "Adventure entrepreneur, 1.9M followers",
@@ -70,6 +77,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
+      // CLAIM SCAN: "finances" — see claim-scan.ts. Do not rewrite.
       "I have been working with Adrian Taffinder for a few months now. Our sessions have been a blessing - from helping me navigate being the best mother to my dragon child, to working through blockages in my finances.",
     name: "Jennifer Nyx",
     role: "Entrepreneur",
@@ -78,6 +86,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
+      // CLAIM SCAN: "coach" — see claim-scan.ts. Do not rewrite.
       "Adrian is a fantastic coach and I've learned so much from him. I've had lots of coaches and mentors in the past but no one has even come close to Adrian. He has this amazing ability to see what's holding you back, then provides a script to work through it.",
     name: "Nick Screeton",
     role: "CEO, LEP Fitness",
@@ -94,6 +103,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
+      // CLAIM SCAN: "anxiety" — see claim-scan.ts. Do not rewrite.
       "In just 2 sessions he removed a massive chunk of anxiety and confusion that was holding me back. I feel lighter and a sense of relief - uncovering things I thought I had conquered, but had actually just buried deep.",
     name: "Steph Skelly",
     role: "Personal Trainer & Lifestyle Coach",
@@ -112,6 +122,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
+      // CLAIM SCAN: "life-changing" — see claim-scan.ts. Do not rewrite.
       "Subconscious surgery is life-changing. You could be struggling in insecurities and your confidence and then you do this and next thing you know you're feeling confident, feeling on top of the world, feeling like you can accomplish anything.",
     name: "Latonya",
     role: "1:1 and Mastermind participant",
@@ -122,6 +133,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
+      // CLAIM SCAN: "life-changing" — see claim-scan.ts. Do not rewrite.
       "If you want change and the real deal, this is it. If you really need change in your life, visible change, you got to apply yourself. It is life-changing. Literally. Every bit of it's worth it. I went all in.",
     name: "Dorinda",
     role: "Subconscious Mastery Program",
@@ -132,6 +144,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
+      // CLAIM SCAN: "financial freedom" — see claim-scan.ts. Do not rewrite.
       "I remember the very first session. I felt really refreshed and rejuvenated after it. I noticed the difference in my physical reality, in the way that I was doing things and handling things. Even from the first sessions I got to experience financial freedom.",
     name: "Latonya",
     role: "On the first Subconscious Surgery session",
@@ -162,6 +175,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
+      // CLAIM SCAN: "mental health" — see claim-scan.ts. Do not rewrite.
       "Last year when we started this I was on disability for mental health. I am in a much much better place than I was 12 months ago. This has been a really really great experience.",
     name: "Marian",
     role: "Mastermind participant",

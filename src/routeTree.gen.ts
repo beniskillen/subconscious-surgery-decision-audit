@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MuscleTestingRouteImport } from './routes/muscle-testing'
 import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MuscleTestingRoute = MuscleTestingRouteImport.update({
+  id: '/muscle-testing',
+  path: '/muscle-testing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiMetaCapiRoute = ApiMetaCapiRouteImport.update({
@@ -25,27 +31,31 @@ const ApiMetaCapiRoute = ApiMetaCapiRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/muscle-testing': typeof MuscleTestingRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/muscle-testing': typeof MuscleTestingRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/muscle-testing': typeof MuscleTestingRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/meta-capi'
+  fullPaths: '/' | '/muscle-testing' | '/api/meta-capi'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/meta-capi'
-  id: '__root__' | '/' | '/api/meta-capi'
+  to: '/' | '/muscle-testing' | '/api/meta-capi'
+  id: '__root__' | '/' | '/muscle-testing' | '/api/meta-capi'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MuscleTestingRoute: typeof MuscleTestingRoute
   ApiMetaCapiRoute: typeof ApiMetaCapiRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/muscle-testing': {
+      id: '/muscle-testing'
+      path: '/muscle-testing'
+      fullPath: '/muscle-testing'
+      preLoaderRoute: typeof MuscleTestingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/meta-capi': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MuscleTestingRoute: MuscleTestingRoute,
   ApiMetaCapiRoute: ApiMetaCapiRoute,
 }
 export const routeTree = rootRouteImport

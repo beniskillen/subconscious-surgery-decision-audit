@@ -202,13 +202,9 @@ function MuscleTestingPage() {
           <h1 className="font-sans text-[2.05rem] leading-[0.98] font-bold tracking-[-0.04em] uppercase sm:text-5xl lg:text-[3.15rem]">
             Find out what sits beneath the surface.
           </h1>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Learn a scientifically validated technique to unlock your Subconscious mind and get to the root of
-            the top limiting belief affecting high performers.
-          </p>
         </div>
 
-        <figure className="mx-auto mt-6 max-w-4xl sm:mt-8">
+        <figure className="mx-auto mt-5 w-full max-w-3xl sm:mt-6">
           <img
             src={asset("brand/hero-course.jpg")}
             alt="Learning the basics of muscle testing, shown on a laptop, tablet and phone beside the Subconscious Surgery course box"
@@ -218,8 +214,12 @@ function MuscleTestingPage() {
           />
         </figure>
 
-        <div className="mx-auto mt-6 flex max-w-xl flex-col items-center text-center sm:mt-8">
+        <div className="mx-auto mt-5 flex max-w-xl flex-col items-center text-center sm:mt-6">
           <CtaLink href={href} />
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Learn a scientifically validated technique to unlock your Subconscious mind and get to the root of
+            the top limiting belief affecting high performers.
+          </p>
         </div>
       </header>
 

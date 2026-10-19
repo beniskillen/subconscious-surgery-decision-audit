@@ -16,10 +16,10 @@ import { pageUtms, withUtms } from "@/lib/page-utm";
 const PAGE_URL = "https://accelerator.subconscioussurgery.com/";
 const PAGE_TITLE = "Find out what sits beneath the surface | Subconscious Surgery";
 const PAGE_DESCRIPTION =
-  "Learn a scientifically validated technique to unlock your Subconscious mind and get to the root of the top limiting belief affecting high performers.";
+  "Learn a practical technique to unlock your Subconscious mind and get to the root of the top limiting belief affecting high performers.";
 const PAGE_IMAGE = "https://accelerator.subconscioussurgery.com/brand/human-energy-spectrum.png";
 
-const CHECKOUT_URL = "https://learn.subconscioussurgery.com/offers/JyDwXCDG/checkout";
+const CHECKOUT_URL = "https://learn.subconscioussurgery.com/offers/dw3hs5SV/checkout";
 const CAMPAIGN = "moneyblocks-intro-2026-10";
 
 const COURSE_NAME = "Learning the basics of muscle testing";
@@ -36,7 +36,7 @@ const FEATURES: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: Orbit,
     title: "Self-assessment",
-    body: "A scientifically validated self-assessment method that uses principles from quantum physics, so you can conduct Subconscious Surgery on yourself and get to the root of your limiting beliefs.",
+    body: "A practical self-assessment method that uses principles from quantum physics, so you can conduct Subconscious Surgery on yourself and get to the root of your limiting beliefs.",
   },
   {
     icon: BookOpen,
@@ -217,7 +217,7 @@ function MuscleTestingPage() {
         <div className="mx-auto mt-5 flex max-w-xl flex-col items-center text-center sm:mt-6">
           <CtaLink href={href} />
           <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Learn a scientifically validated technique to unlock your Subconscious mind and get to the root of
+            Learn a practical technique to unlock your Subconscious mind and get to the root of
             the top limiting belief affecting high performers.
           </p>
         </div>
